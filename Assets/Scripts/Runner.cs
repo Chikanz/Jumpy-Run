@@ -31,6 +31,8 @@ public class Runner : MonoBehaviour
     private Rigidbody RB;
     private Animator AC;
 
+    public float MaxSpeed = 14;
+
     private bool inAir;
     private float inAirTimer;
 
@@ -42,6 +44,8 @@ public class Runner : MonoBehaviour
     private Collider[] RagdollColliders;
     
     private bool isDead;
+
+    private bool sliding;
 
     public EventHandler OnDeath;
     
@@ -71,9 +75,9 @@ public class Runner : MonoBehaviour
     {
         if(isDead) return;
 
-        if (SwipeDetector.swipedDown && !inAir)
+        if (SwipeDetector.swipedDown && !inAir && !sliding)
         {
-            AC.SetTrigger(SlideHash);
+            StartCoroutine(Slide());
         }
 
         if (SwipeDetector.swipedUp && !inAir)
@@ -82,6 +86,7 @@ public class Runner : MonoBehaviour
             JumpedAtTime = Time.time;
             AC.SetTrigger(JumpHash);
             inAir = true;
+            FellFromY = transform.position.y;
         }
 
         if (Time.time >= JumpedAtTime + ApplyJumpTime)
@@ -91,7 +96,7 @@ public class Runner : MonoBehaviour
 
         JumpVector = Vector3.Lerp(JumpVector, JumpVectorGoal, 0.1f);
 
-        speed += SpeedMulti * Time.deltaTime;
+        if(speed < MaxSpeed) speed += SpeedMulti * Time.deltaTime;
 
         //In air timer for rolling + anmimations
         if (inAir)
@@ -108,7 +113,7 @@ public class Runner : MonoBehaviour
         }
         
         //Slide collider
-        ToggleSlide(AC.GetCurrentAnimatorStateInfo(0).IsName("Slide"));
+        ToggleSlide(sliding || AC.GetCurrentAnimatorStateInfo(0).IsName("Falling To Roll")); 
 
         AC.SetBool(InAirHash, inAir);
     }
@@ -118,7 +123,27 @@ public class Runner : MonoBehaviour
         RunCollider.enabled = !enabled;
         SlideCollider.enabled = enabled;
     }
+
+    private IEnumerator Slide()
+    {
+        sliding = true;
+        AC.SetTrigger(SlideHash);
+        yield return new WaitForSeconds(0.25f);
+        speed -= 0.5f;
+        yield return new WaitForSeconds(0.5f);
+        sliding = false;
+    }
     
+    private void Die()
+    {
+        if(isDead) return; //Can't die twice
+
+        isDead = true;
+        ToggleRagdoll(true);
+        AC.enabled = false;
+
+        OnDeath?.Invoke(this, null); //Fire off death event
+    }
 
     private void OnCollisionEnter(Collision other)
     {
@@ -143,17 +168,6 @@ public class Runner : MonoBehaviour
         }
     }
     
-    private void Die()
-    {
-        if(isDead) return; //Can't die twice
-
-        isDead = true;
-        ToggleRagdoll(true);
-        AC.enabled = false;
-
-        OnDeath?.Invoke(this, null); //Fire off death event
-    }
-
     private void OnCollisionExit(Collision other)
     {
         if (other.gameObject.CompareTag("Building"))

@@ -6,12 +6,14 @@
     <e p="C:\Users\chika\OneDrive\Documents\Jumpy-Run" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Follow.cs" t="Include" />
+        <e p="MaterialSwitcher.cs" t="Include" />
+        <e p="ObstacleSpawner.cs" t="Include" />
+        <e p="Recycler.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="BuildingSpawner.cs" t="Include" />
           <e p="CopyPosition.cs" t="Include" />
           <e p="Pooling" t="Include">
-            <e p="GenericPool.cs" t="Include" />
-            <e p="GenericPoolObject.cs" t="Include" />
             <e p="Pool.cs" t="Include" />
           </e>
           <e p="Runner.cs" t="Include" />

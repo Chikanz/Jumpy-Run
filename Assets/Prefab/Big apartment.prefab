@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3516572410041351046}
   - component: {fileID: 770726833940819413}
-  - component: {fileID: -8166981612248819598}
   m_Layer: 0
   m_Name: Big apartment
   m_TagString: Building
@@ -48,18 +47,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 31.520645, y: 18.47673, z: 4.9083853}
   m_Center: {x: 0.022499084, y: 8.774513, z: 0.16172075}
---- !u!114 &-8166981612248819598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8416620801101476680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99bde27b59527454da344870206e2f31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1604455721639068646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,6 +116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 831701629757182861, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
+    - {fileID: -154741949231678458, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
 --- !u!4 &7254823837644888274 stripped
 Transform:
@@ -205,6 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 831701629757182861, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
+    - {fileID: -154741949231678458, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
 --- !u!4 &2774324550089956829 stripped
 Transform:
@@ -281,6 +270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 831701629757182861, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
+    - {fileID: -154741949231678458, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 021dd065161c86a499e5313425ae44fe, type: 3}
 --- !u!4 &3284217752718377768 stripped
 Transform:

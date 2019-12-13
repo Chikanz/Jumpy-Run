@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class BuildingSpawner : MonoBehaviour
 {
@@ -27,9 +30,12 @@ public class BuildingSpawner : MonoBehaviour
     public int TotalPlatformPoolSize;
 
     private Platform[] ProbabilityPool = new Platform[10];
+
+    public delegate void PlatformPlacedEvent(Transform platform);
+    public PlatformPlacedEvent OnPlatformPlaced;
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //Generate probability Pool List + setup pools
         float chanceTotal = 0;
@@ -41,7 +47,7 @@ public class BuildingSpawner : MonoBehaviour
             
             //Object pools
             var poolObj = Instantiate(new GameObject($"{platform.obj.name} Pool"), PoolParent);
-            var pool = poolObj.AddComponent<GenericPool>();
+            var pool = poolObj.AddComponent<Pool>();
             pool.Object = platform.obj;
             pool.Size = TotalPlatformPoolSize / platforms.Length;
             platform.SetPool(pool);
@@ -60,35 +66,34 @@ public class BuildingSpawner : MonoBehaviour
         
         //Place first building (long one to start off with)
         var firstPos = new Vector3(0, buildingStartHeight, zPlaneDistance);
-        AddNewBuilding(platforms[1], firstPos);
+        AddNewBuilding(platforms[0], firstPos);
+        
+        //Place another few platforms to start us off
+        for (int i = 0; i < 5; i++)
+        {
+            PlaceNewBuilding();
+        }
         
         //todo remove this
         Player.position = firstPos + Vector3.up * _lastPlacedPlatform.obj.GetComponent<BoxCollider>().size.y;
-
-        for (int i = 0; i < 20; i++)
-        {
-            var obstacle = GetNewObstacle();
-            
-            var x = Vector3.right * (Random.Range((int) GapBetweenObsticles.x, (int) GapBetweenObsticles.y) +
-                                     _lastPlacedPlatform.width/2 + obstacle.width/2);
-            
-            Debug.Log(_lastPlacedPlatform.obj.name + " " + x);
-            
-            var pos = lastPlacedObstaclePos + x + //X
-                      Vector3.up * Random.Range(heightBetweenObstacles.x, heightBetweenObstacles.y); //Y
-
-            pos.z = zPlaneDistance; //Lock to our Z distance
-            
-            //Clamp Y
-            pos.y = Mathf.Clamp(pos.y, PlatformHeightClamp.x, PlatformHeightClamp.y);
-            AddNewBuilding(obstacle, pos);
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Time.frameCount % 30 == 0) //Check to place buildings every 30 frames
+        {
+            bool canPlace = true;
+            foreach (Platform platform in platforms)
+            {
+                if (platform.pool.IsEmpty()) canPlace = false;
+            }
+
+            if (canPlace)
+            {
+                PlaceNewBuilding();
+            }
+        }
     }
 
     private Platform GetNewObstacle()
@@ -97,20 +102,41 @@ public class BuildingSpawner : MonoBehaviour
         return ProbabilityPool[rand];
     }
 
-    public void AddNewBuilding(Platform platform, Vector3 position)
+    //Spawn a building at a position
+    private void AddNewBuilding(Platform platform, Vector3 position)
     {
-        //Get from the right pool
-        //var newObj = Instantiate(obstacle.obj, transform);
-        var newObj = platform.pool.GetFromPool();
-        
-        newObj.transform.rotation = Quaternion.Euler(0, 180, 0);
-        
-        newObj.transform.position = position;
+        //Get object from pool
+        var platformObj = platform.pool.GetFromPool();
+
+        Transform buildingTransform = platformObj.transform; //cache transform so unity doesn't have to keep getting it from C++
+        buildingTransform.rotation = Quaternion.Euler(0, 180, 0);
+        buildingTransform.position = position;
 
         _lastPlacedPlatform = platform;
-        lastPlacedObstaclePos = newObj.transform.position;
+        lastPlacedObstaclePos = buildingTransform.position;
+        
+        //Fire out event
+        OnPlatformPlaced?.Invoke(platformObj);
     }
-    
+
+    //Places a new building randomly in front of the last
+    private void PlaceNewBuilding()
+    {
+        var obstacle = GetNewObstacle();
+
+        var xTranslate = Vector3.right * (Random.Range((int) GapBetweenObsticles.x, (int) GapBetweenObsticles.y) +
+                                          _lastPlacedPlatform.dimensions.x / 2 + obstacle.dimensions.x / 2);
+        
+        var yTranslate = Vector3.up * Random.Range(heightBetweenObstacles.x, heightBetweenObstacles.y);
+
+        var pos = lastPlacedObstaclePos + xTranslate + yTranslate;
+
+        pos.z = zPlaneDistance; //Lock to our Z distance
+
+        //Clamp Y
+        pos.y = Mathf.Clamp(pos.y, PlatformHeightClamp.x, PlatformHeightClamp.y);
+        AddNewBuilding(obstacle, pos);
+    }
 }
 
 [System.Serializable]
@@ -119,16 +145,16 @@ public class Platform
     public GameObject obj;
     public float rarity;
 
-    public GenericPool pool { get; private set; }
+    public Pool pool { get; private set; }
 
-    public float width { get; private set; }
+    public Vector3 dimensions { get; private set; }
 
     public void Init()
     {
-        width = obj.GetComponent<BoxCollider>().size.x;
+        dimensions = obj.GetComponent<BoxCollider>().size;
     }
 
-    public void SetPool(GenericPool pool)
+    public void SetPool(Pool pool)
     {
         this.pool = pool;
     }
