@@ -9,6 +9,11 @@
         <e p="Scripts" t="Include">
           <e p="BuildingSpawner.cs" t="Include" />
           <e p="CopyPosition.cs" t="Include" />
+          <e p="Pooling" t="Include">
+            <e p="GenericPool.cs" t="Include" />
+            <e p="GenericPoolObject.cs" t="Include" />
+            <e p="Pool.cs" t="Include" />
+          </e>
           <e p="Runner.cs" t="Include" />
           <e p="SwipeDetector.cs" t="Include" />
         </e>

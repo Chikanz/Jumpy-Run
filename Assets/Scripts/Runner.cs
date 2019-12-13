@@ -6,35 +6,33 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Runner : MonoBehaviour
 {
+    
+    [Header("Locomotion")]
     public float speed;
     public float JumpHeight;
-
-    private Vector3 MoveVector;
+    public float ApplyJumpTime = 0.25f;
+    public float SpeedMulti;
     
-    private Vector3 JumpVector;
-    private Vector3 JumpVectorGoal;
-
+    public Vector2 SpeedClamp;
+    
     [Tooltip("How long to the player is in the air before a fall is triggered")]
     public float triggerFallAfter = 0.5f;
     
-    private float JumpedAtTime;
-    public float ApplyJumpTime = 0.25f;
-
-    public float SpeedMulti;
-    
-    private Rigidbody RB;
+    [Header("Objects")]
     public CapsuleCollider RunCollider;
     public CapsuleCollider SlideCollider;
+
+    private Vector3 MoveVector;
+    private Vector3 JumpVector;
+    private Vector3 JumpVectorGoal;
+    
+    private float JumpedAtTime;
+    
+    private Rigidbody RB;
     private Animator AC;
+
     private bool inAir;
     private float inAirTimer;
-    
-    private static readonly int JumpHash = Animator.StringToHash("Jump");
-    private static readonly int FallingHash = Animator.StringToHash("Falling");
-    private static readonly int LandedHash = Animator.StringToHash("Landed");
-    private static readonly int LandingTypeHash = Animator.StringToHash("LandingType");
-    private static readonly int SlideHash = Animator.StringToHash("Slide");
-    private static readonly int InAirHash = Animator.StringToHash("InAir");
 
     private bool falling = false;
     private float FellFromY;
@@ -43,10 +41,18 @@ public class Runner : MonoBehaviour
     private Rigidbody[] Ridgidbodies;
     private Collider[] RagdollColliders;
     
-
     private bool isDead;
 
     public EventHandler OnDeath;
+    
+    #region AnimatorHashes
+    private static readonly int JumpHash = Animator.StringToHash("Jump");
+    private static readonly int FallingHash = Animator.StringToHash("Falling");
+    private static readonly int LandedHash = Animator.StringToHash("Landed");
+    private static readonly int LandingTypeHash = Animator.StringToHash("LandingType");
+    private static readonly int SlideHash = Animator.StringToHash("Slide");
+    private static readonly int InAirHash = Animator.StringToHash("InAir");
+    #endregion
 
     // Start is called before the first frame update
     void Start()
