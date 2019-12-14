@@ -69,7 +69,7 @@ public class BuildingSpawner : MonoBehaviour
         AddNewBuilding(platforms[0], firstPos);
         
         //Place another few platforms to start us off
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 3; i++)
         {
             PlaceNewBuilding();
         }

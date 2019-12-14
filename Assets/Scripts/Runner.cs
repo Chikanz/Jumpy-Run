@@ -6,7 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Runner : MonoBehaviour
 {
-    
     [Header("Locomotion")]
     public float speed;
     public float JumpHeight;
@@ -43,7 +42,7 @@ public class Runner : MonoBehaviour
     private Rigidbody[] Ridgidbodies;
     private Collider[] RagdollColliders;
     
-    private bool isDead;
+    public bool isDead { get; private set; }
 
     private bool sliding;
 
