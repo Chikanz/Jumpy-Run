@@ -9,7 +9,6 @@ public class Pool : MonoBehaviour
     public GameObject Object;
 
     private Stack<Transform> pool = new Stack<Transform>();
-    protected List<Transform> poolRef = new List<Transform>(); //For keeping track of all objs, not just inactive ones (not ideal but oh well)
 
     [Tooltip("How many objects should the pool recycle?")]
     public int Size = 20;
@@ -31,7 +30,7 @@ public class Pool : MonoBehaviour
     public virtual Transform GetFromPool()
     {         
         //Pop stack or get alive the longest
-        Debug.Assert(pool.Count > 0, "No more items to pool!");
+        Debug.Assert(pool.Count > 0, $"{gameObject.name} has no more items to pool!");
         var obj = pool.Pop();
         obj.gameObject.SetActive(true);
         
@@ -71,12 +70,32 @@ public class Pool : MonoBehaviour
     {
         return pool.Count == 0;
     }
+
+    public Transform[] Items()
+    {
+        return pool.ToArray();
+    }
+
+    public void ForceRecycleAll()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            ReturnToPool(transform.GetChild(i));
+        }
+    }
 }
 
 
 public interface IPoolable
 {
+    /// <summary>
+    /// Called when the object is returned to the pool
+    /// </summary>
     void ReturnToPool();
+    
+    /// <summary>
+    /// Called once when the object is created for the first time
+    /// </summary>
     void CreatedInPool();
 }
 

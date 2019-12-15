@@ -31,6 +31,8 @@ public class BuildingSpawner : MonoBehaviour
 
     private Platform[] ProbabilityPool = new Platform[10];
 
+    public int InitialPlacement = 3;
+
     public delegate void PlatformPlacedEvent(Transform platform);
     public PlatformPlacedEvent OnPlatformPlaced;
     
@@ -65,23 +67,42 @@ public class BuildingSpawner : MonoBehaviour
         Debug.Assert(chanceTotal == 1, "Your spawn percentages do not sum to 1!");
         
         //Place first building (long one to start off with)
+        
+    }
+
+    private void Start()
+    {
+        StartPlacement();
+        GameManager.Instance.OnResetLate += StartPlacement;
+        GameManager.Instance.OnResetEarly += RecallAll;    
+    }
+
+    private void StartPlacement()
+    {
         var firstPos = new Vector3(0, buildingStartHeight, zPlaneDistance);
         AddNewBuilding(platforms[0], firstPos);
         
         //Place another few platforms to start us off
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < InitialPlacement; i++)
         {
             PlaceNewBuilding();
         }
         
-        //todo remove this
         Player.position = firstPos + Vector3.up * _lastPlacedPlatform.obj.GetComponent<BoxCollider>().size.y;
+    }
+
+    private void RecallAll()
+    {
+        foreach (Platform platform in platforms)
+        {
+            platform.pool.ForceRecycleAll();    
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.frameCount % 30 == 0) //Check to place buildings every 30 frames
+        if (Time.frameCount % 30 == 0 && GameManager.Instance.GameState == GameManager.eGameState.RUNNING) //Check to place buildings every 30 frames
         {
             bool canPlace = true;
             foreach (Platform platform in platforms)
@@ -101,24 +122,7 @@ public class BuildingSpawner : MonoBehaviour
         int rand = Random.Range(0, 10);
         return ProbabilityPool[rand];
     }
-
-    //Spawn a building at a position
-    private void AddNewBuilding(Platform platform, Vector3 position)
-    {
-        //Get object from pool
-        var platformObj = platform.pool.GetFromPool();
-
-        Transform buildingTransform = platformObj.transform; //cache transform so unity doesn't have to keep getting it from C++
-        buildingTransform.rotation = Quaternion.Euler(0, 180, 0);
-        buildingTransform.position = position;
-
-        _lastPlacedPlatform = platform;
-        lastPlacedObstaclePos = buildingTransform.position;
-        
-        //Fire out event
-        OnPlatformPlaced?.Invoke(platformObj);
-    }
-
+    
     //Places a new building randomly in front of the last
     private void PlaceNewBuilding()
     {
@@ -137,25 +141,42 @@ public class BuildingSpawner : MonoBehaviour
         pos.y = Mathf.Clamp(pos.y, PlatformHeightClamp.x, PlatformHeightClamp.y);
         AddNewBuilding(obstacle, pos);
     }
-}
-
-[System.Serializable]
-public class Platform
-{
-    public GameObject obj;
-    public float rarity;
-
-    public Pool pool { get; private set; }
-
-    public Vector3 dimensions { get; private set; }
-
-    public void Init()
+    
+    //Spawn a building at a position
+    private void AddNewBuilding(Platform platform, Vector3 position)
     {
-        dimensions = obj.GetComponent<BoxCollider>().size;
+        //Get object from pool
+        var platformObj = platform.pool.GetFromPool();
+
+        Transform buildingTransform = platformObj.transform; //cache transform so unity doesn't have to keep getting it from C++
+        buildingTransform.rotation = Quaternion.Euler(0, 180, 0);
+        buildingTransform.position = position;
+
+        _lastPlacedPlatform = platform;
+        lastPlacedObstaclePos = buildingTransform.position;
+        
+        //Fire out event
+        OnPlatformPlaced?.Invoke(platformObj);
     }
 
-    public void SetPool(Pool pool)
+    [Serializable]
+    public class Platform
     {
-        this.pool = pool;
+        public GameObject obj;
+        public float rarity;
+
+        public Pool pool { get; private set; }
+
+        public Vector3 dimensions { get; private set; }
+
+        public void Init()
+        {
+            dimensions = obj.GetComponent<BoxCollider>().size;
+        }
+
+        public void SetPool(Pool pool)
+        {
+            this.pool = pool;
+        }
     }
 }

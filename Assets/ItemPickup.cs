@@ -11,10 +11,10 @@ public class ItemPickup : MonoBehaviour, IPoolable
     public EventHandler OnPickup;
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        MR = GetComponent<MeshRenderer>();
-        PS = transform.parent.GetChild(1).GetComponent<ParticleSystem>();
+        MR = GetComponentInChildren<MeshRenderer>();
+        PS = GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -25,12 +25,12 @@ public class ItemPickup : MonoBehaviour, IPoolable
 
     public void ReturnToPool()
     {
-        
+        TogglePickedUp(false);
     }
 
     public void CreatedInPool()
     {
-        TogglePickedUp(false);
+        
     }
 
     private void TogglePickedUp(bool enabled)

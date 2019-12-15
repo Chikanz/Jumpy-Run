@@ -8,6 +8,8 @@ public class Follow : MonoBehaviour
 {
     public Transform follow;
     private Vector3 lastPos;
+
+    private bool canFollow = true;
     
     // Start is called before the first frame update
     void Start()
@@ -18,10 +20,13 @@ public class Follow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var followPosition = follow.position;
-        
-        var delta = followPosition - lastPos;
-        transform.position += delta;
-        lastPos = followPosition;
+        if (canFollow)
+        {
+            var followPosition = follow.position;
+
+            var delta = followPosition - lastPos;
+            transform.position += delta;
+            lastPos = followPosition;
+        }
     }
 }

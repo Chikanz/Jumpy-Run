@@ -6,14 +6,20 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Runner : MonoBehaviour
 {
-    [Header("Locomotion")]
-    public float speed;
+    [Header("Locomotion")] 
+    public float startSpeed;
+    private float speed;
+    [Tooltip("Controls how big the jump vector is")]
     public float JumpHeight;
+    [Tooltip("How long the jump vector is applied for")]
     public float ApplyJumpTime = 0.25f;
+    [Tooltip("How fast to increase the running speed")]
     public float SpeedMulti;
-    
-    public Vector2 SpeedClamp;
-    
+    [Tooltip("Fall height from which the landing is a roll")]
+    public float RollHeight = 2;
+    [Tooltip("Clamps speed at this amount")]
+    public float MaxSpeed = 14;
+
     [Tooltip("How long to the player is in the air before a fall is triggered")]
     public float triggerFallAfter = 0.5f;
     
@@ -30,14 +36,11 @@ public class Runner : MonoBehaviour
     private Rigidbody RB;
     private Animator AC;
 
-    public float MaxSpeed = 14;
-
     private bool inAir;
     private float inAirTimer;
 
     private bool falling = false;
     private float FellFromY;
-    public float RollHeight = 2;
 
     private Rigidbody[] Ridgidbodies;
     private Collider[] RagdollColliders;
@@ -55,11 +58,15 @@ public class Runner : MonoBehaviour
     private static readonly int LandingTypeHash = Animator.StringToHash("LandingType");
     private static readonly int SlideHash = Animator.StringToHash("Slide");
     private static readonly int InAirHash = Animator.StringToHash("InAir");
+    private static readonly int ResetHash = Animator.StringToHash("Reset");
+
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        speed = startSpeed;
+        
         RB = GetComponent<Rigidbody>();
         AC = GetComponent<Animator>();
 
@@ -68,8 +75,10 @@ public class Runner : MonoBehaviour
         ToggleRagdoll(false);
         
         RB.isKinematic = false;
-    }
 
+        GameManager.Instance.OnResetEarly += Reset;
+    }
+    
     private void Update()
     {
         if(isDead) return;
@@ -142,6 +151,19 @@ public class Runner : MonoBehaviour
         AC.enabled = false;
 
         OnDeath?.Invoke(this, null); //Fire off death event
+        
+        GameManager.Instance.ChangeState(GameManager.eGameState.GAMEOVER);
+    }
+
+    void Reset()
+    {
+        speed = startSpeed;
+        isDead = false;
+        ToggleRagdoll(false);
+        transform.rotation = Quaternion.Euler(0, 90, 0);
+        AC.enabled = true;
+        AC.SetTrigger(ResetHash);
+        RB.isKinematic = false;
     }
 
     private void OnCollisionEnter(Collision other)
@@ -159,9 +181,9 @@ public class Runner : MonoBehaviour
             AC.SetInteger(LandingTypeHash, landingType);
         }
 
-        var dot =Vector3.Dot(other.contacts[0].normal, Vector3.up);
+        var dot = Vector3.Dot(other.contacts[0].normal, Vector3.left);
         
-        if (dot < 0.8f)
+        if (dot > 0.85f)
         {
             Die();
         }
@@ -193,8 +215,8 @@ public class Runner : MonoBehaviour
 
     void ToggleRagdoll(bool enabled)
     {
-        if (enabled) RB.constraints = RigidbodyConstraints.None;
-        
+        RB.constraints = enabled ? RigidbodyConstraints.None : RigidbodyConstraints.FreezeRotation;
+
         foreach (Rigidbody RB in Ridgidbodies)
         {
             RB.isKinematic = !enabled;

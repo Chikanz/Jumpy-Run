@@ -4,25 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(BuildingSpawner))]
-
 //Places obstacles on platforms. Also can place items
 public class ObstacleSpawner : MonoBehaviour
 {
     public Transform PoolRoot;
-    private BuildingSpawner spawner;
+    public BuildingSpawner spawner;
     public int ObsticlesToPool = 20;
 
     public Obstacle[] Obstacles;
-    private List<Pool> Pools = new List<Pool>();
-    public float chanceToPlaceObstacle = 0.25f;
 
     private bool firstPlaced = false; //Stop from spawning obsticles on first platform
+
+    private static bool PlacedThisFrame; //Bit of a hack to stop objects spawning in each other
 
     // Start is called before the first frame update
     void Awake()
     {
-        spawner = GetComponent<BuildingSpawner>();
         spawner.OnPlatformPlaced += OnPlatformPlaced;
 
         //Create pools
@@ -33,10 +30,21 @@ public class ObstacleSpawner : MonoBehaviour
             pool.Size = ObsticlesToPool;
             pool.Object = obstacle.Object;
             pool.Init();
-            Pools.Add(pool);
+            obstacle.pool = pool;
         }
+        
+        //Recall all game objects on reset
+        GameManager.Instance.OnResetEarly += () =>
+        {
+            firstPlaced = false;
+            foreach (Obstacle obstacle in Obstacles)
+            {
+                obstacle.pool.ForceRecycleAll();
+            }
+        };
     }
 
+    //Place obstacles on platforms when they're spawned
     private void OnPlatformPlaced(Transform platform)
     {
         if(!firstPlaced)
@@ -45,36 +53,39 @@ public class ObstacleSpawner : MonoBehaviour
             return;
         }
         
+        var index = Random.Range(0, Obstacles.Length);
+        var obstacle = Obstacles[index];
+        
         //Chance to place
-        if (Random.Range(0.0f, 1.0f) <= chanceToPlaceObstacle)
+        if (!PlacedThisFrame && Random.value <= obstacle.SpawnChance)
         {
-            var index = Random.Range(0, Obstacles.Length);
-            var obstacle = Obstacles[index];
-            
             //Only place on right platforms
-            if (obstacle.PlacementMask == string.Empty || platform.name == obstacle.PlacementMask) 
+            if (obstacle.PlacementMask == string.Empty || platform.name == obstacle.PlacementMask)
             {
-                var obsPool = Pools[index];
+                var obsPool = Obstacles[index].pool;
                 var obj = obsPool.GetFromPool();
 
                 var pos = platform.position + Vector3.up * platform.GetComponent<BoxCollider>().size.y;
                 obj.position = pos;
                 obj.rotation = Quaternion.Euler(0, 180, 0);
+
+                PlacedThisFrame = true;
             }
         }
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        PlacedThisFrame = false;
     }
-
+    
     [Serializable]
-    public struct Obstacle
+    public class Obstacle
     {
         public GameObject Object;
         public string PlacementMask; //If not empty, will only place on this platform
+        public float SpawnChance;
+        [HideInInspector] public Pool pool;
     }
 }

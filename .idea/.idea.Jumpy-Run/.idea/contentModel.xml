@@ -6,6 +6,7 @@
     <e p="C:\Users\chika\OneDrive\Documents\Jumpy-Run" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="GameOverMenu.cs" t="Include" />
         <e p="ItemPickup.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="BuildingSpawner.cs" t="Include" />
@@ -19,6 +20,7 @@
           </e>
           <e p="Recycler.cs" t="Include" />
           <e p="Runner.cs" t="Include" />
+          <e p="ScoreManager.cs" t="Include" />
           <e p="ScreenShaker.cs" t="Include" />
           <e p="Spinner.cs" t="Include" />
           <e p="StopCameraOnDeath.cs" t="Include" />
