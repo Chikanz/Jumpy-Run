@@ -31,7 +31,11 @@ public class Recycler : MonoBehaviour
         follow = GetComponent<Follow>();
 
         GameManager.Instance.OnStateChanged += OnStateChanged;
-        GameManager.Instance.OnResetEarly += () => transform.position = startPos;
+        GameManager.Instance.OnResetEarly += () =>
+        {
+            transform.position = startPos;
+        };
+
     }
     
     private void OnStateChanged(GameManager.eGameState state)
@@ -47,6 +51,8 @@ public class Recycler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (GameManager.Instance.GameState != GameManager.eGameState.RUNNING) return;
+        
         Pool pool;
         if (PoolLookup.TryGetValue(other.transform.name, out pool))
         {

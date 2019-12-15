@@ -6,7 +6,9 @@ using UnityEngine;
 //Translate any delta in following object to this object
 public class Follow : MonoBehaviour
 {
-    public Transform follow;
+    public Transform Target;
+
+    public float Disance;
     private Vector3 lastPos;
 
     private bool canFollow = true;
@@ -14,7 +16,7 @@ public class Follow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        lastPos = follow.position;
+        lastPos = Target.position;
     }
 
     // Update is called once per frame
@@ -22,11 +24,7 @@ public class Follow : MonoBehaviour
     {
         if (canFollow)
         {
-            var followPosition = follow.position;
-
-            var delta = followPosition - lastPos;
-            transform.position += delta;
-            lastPos = followPosition;
+            transform.position = Target.position + Vector3.left * Disance;
         }
     }
 }

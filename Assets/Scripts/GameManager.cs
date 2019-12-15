@@ -50,8 +50,10 @@ public class GameManager : MonoBehaviour
     IEnumerator StartReset()
     {
         OnResetEarly?.Invoke();
-        yield return null;
+        
         OnResetLate?.Invoke();
+        
+        yield return null;
     }
     
 }

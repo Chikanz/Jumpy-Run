@@ -19,8 +19,9 @@ public class Runner : MonoBehaviour
     public float RollHeight = 2;
     [Tooltip("Clamps speed at this amount")]
     public float MaxSpeed = 14;
-
-    [Tooltip("How long to the player is in the air before a fall is triggered")]
+    [Tooltip("How much to slow down when sliding")]
+    float slideSlowDown = 0.5f;
+    [Tooltip("How long the player is in the air before a fall is triggered")]
     public float triggerFallAfter = 0.5f;
     
     [Header("Objects")]
@@ -137,7 +138,7 @@ public class Runner : MonoBehaviour
         sliding = true;
         AC.SetTrigger(SlideHash);
         yield return new WaitForSeconds(0.25f);
-        speed -= 0.5f;
+        speed -= slideSlowDown;
         yield return new WaitForSeconds(0.5f);
         sliding = false;
     }
@@ -164,6 +165,7 @@ public class Runner : MonoBehaviour
         AC.enabled = true;
         AC.SetTrigger(ResetHash);
         RB.isKinematic = false;
+        inAir = false;
     }
 
     private void OnCollisionEnter(Collision other)

@@ -12,11 +12,11 @@ public class Pool : MonoBehaviour
 
     [Tooltip("How many objects should the pool recycle?")]
     public int Size = 20;
-    
-    
+
+    private Transform[] AllItems;
+
     public virtual void Init()
     {
-
         for (int i = 0; i < Size; i++)
         {
             var obj = Instantiate(Object, transform);
@@ -25,6 +25,8 @@ public class Pool : MonoBehaviour
             TryGetPoolable(obj.transform)?.CreatedInPool();
             obj.gameObject.SetActive(false);
         }
+
+        AllItems = pool.ToArray();
     }
 
     public virtual Transform GetFromPool()
@@ -73,7 +75,7 @@ public class Pool : MonoBehaviour
 
     public Transform[] Items()
     {
-        return pool.ToArray();
+        return AllItems;
     }
 
     public void ForceRecycleAll()
