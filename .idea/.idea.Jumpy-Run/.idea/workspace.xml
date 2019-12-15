@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="71a35f44-0314-48b5-aa19-a24f319e9e13" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Jumpy-Run/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Jumpy-Run/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Wine.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Wine.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Game.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Follow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Follow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pooling/Pool.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pooling/Pool.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Recycler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Recycler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runner.cs" afterDir="false" />
-    </list>
+    <list default="true" id="71a35f44-0314-48b5-aa19-a24f319e9e13" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +14,7 @@
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/BuildingSpawner.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="377">
-              <caret line="152" column="31" lean-forward="true" selection-start-line="152" selection-start-column="31" selection-end-line="152" selection-end-column="31" />
+              <caret line="152" column="31" selection-start-line="152" selection-start-column="31" selection-end-line="152" selection-end-column="31" />
               <folding>
                 <marker date="1576402459049" expanded="false" signature="6:192" ph="..." />
                 <marker date="1576402459049" expanded="true" signature="238:5499" ph="{...}" />
@@ -242,7 +233,7 @@
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Follow.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="380">
-              <caret line="21" column="38" lean-forward="true" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
+              <caret line="21" column="38" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
               <folding>
                 <marker date="1576399287075" expanded="false" signature="6:78" ph="..." />
                 <marker date="1576399287075" expanded="true" signature="173:608" ph="{...}" />
@@ -335,7 +326,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="x" value="693" />
     <option name="width" value="2715" />
     <option name="height" value="2112" />
@@ -403,7 +394,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="462" y="0" width="1810" height="1408" extended-state="0" />
+    <frame x="462" y="0" width="1810" height="1408" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12542759" />
@@ -494,7 +485,7 @@
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/Follow.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="380">
-          <caret line="21" column="38" lean-forward="true" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
+          <caret line="21" column="38" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
           <folding>
             <marker date="1576399287075" expanded="false" signature="6:78" ph="..." />
             <marker date="1576399287075" expanded="true" signature="173:608" ph="{...}" />
@@ -612,7 +603,7 @@
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/BuildingSpawner.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="377">
-          <caret line="152" column="31" lean-forward="true" selection-start-line="152" selection-start-column="31" selection-end-line="152" selection-end-column="31" />
+          <caret line="152" column="31" selection-start-line="152" selection-start-column="31" selection-end-line="152" selection-end-column="31" />
           <folding>
             <marker date="1576402459049" expanded="false" signature="6:192" ph="..." />
             <marker date="1576402459049" expanded="true" signature="238:5499" ph="{...}" />
