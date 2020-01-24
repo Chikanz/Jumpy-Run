@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles pooling and game interaction of items in the world 
+/// </summary>
 public class ItemPickup : MonoBehaviour, IPoolable
 {
     private bool pickedUp = false;
@@ -10,17 +13,10 @@ public class ItemPickup : MonoBehaviour, IPoolable
     private ParticleSystem PS;
     public EventHandler OnPickup;
     
-    // Start is called before the first frame update
     void Awake()
     {
         MR = GetComponentInChildren<MeshRenderer>();
         PS = GetComponentInChildren<ParticleSystem>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void ReturnToPool()

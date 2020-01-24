@@ -17,12 +17,12 @@ public class BuildingSpawner : MonoBehaviour
     public Vector2 GapBetweenObsticles;
 
     private Platform _lastPlacedPlatform;
-    private Vector3 lastPlacedObstaclePos;
+    private Transform lastPlacedBuildingTransform;
 
     public float buildingStartHeight = 40;
     [FormerlySerializedAs("ObstacleHeightClamp")] public Vector2 PlatformHeightClamp;
 
-    public Transform Player; //todo remove into seperate class
+    public Transform Player;
 
     [Header("Pooling")]
     public Transform PoolParent;
@@ -32,12 +32,12 @@ public class BuildingSpawner : MonoBehaviour
     private Platform[] ProbabilityPool = new Platform[10];
 
     public int InitialPlacement = 3;
+    public float PlacementDistanceToPlayer = 50;
 
     public delegate void PlatformPlacedEvent(Transform platform);
     public PlatformPlacedEvent OnPlatformPlaced;
     
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         //Generate probability Pool List + setup pools
         float chanceTotal = 0;
@@ -88,6 +88,7 @@ public class BuildingSpawner : MonoBehaviour
             PlaceNewBuilding();
         }
         
+        //Place player
         Player.position = firstPos + Vector3.up * _lastPlacedPlatform.obj.GetComponent<BoxCollider>().size.y;
     }
 
@@ -98,11 +99,11 @@ public class BuildingSpawner : MonoBehaviour
             platform.pool.ForceRecycleAll();    
         }
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        if (Time.frameCount % 30 == 0 && GameManager.Instance.GameState == GameManager.eGameState.RUNNING) //Check to place buildings every 30 frames
+        var lastBuildingXDist = lastPlacedBuildingTransform.position.x - Player.position.x;
+        if (GameManager.Instance.GameState == GameManager.eGameState.RUNNING && lastBuildingXDist < PlacementDistanceToPlayer) //Check to place buildings every 30 frames
         {
             bool canPlace = true;
             foreach (Platform platform in platforms)
@@ -133,7 +134,7 @@ public class BuildingSpawner : MonoBehaviour
         
         var yTranslate = Vector3.up * Random.Range(heightBetweenObstacles.x, heightBetweenObstacles.y);
 
-        var pos = lastPlacedObstaclePos + xTranslate + yTranslate;
+        var pos = lastPlacedBuildingTransform.position + xTranslate + yTranslate;
 
         pos.z = zPlaneDistance; //Lock to our Z distance
 
@@ -153,7 +154,7 @@ public class BuildingSpawner : MonoBehaviour
         buildingTransform.position = position;
 
         _lastPlacedPlatform = platform;
-        lastPlacedObstaclePos = buildingTransform.position;
+        lastPlacedBuildingTransform = buildingTransform;
         
         //Fire out event
         OnPlatformPlaced?.Invoke(platformObj);

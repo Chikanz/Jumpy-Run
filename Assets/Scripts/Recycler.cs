@@ -18,14 +18,21 @@ public class Recycler : MonoBehaviour
 
     private Vector3 startPos;
     
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         startPos = transform.position;
         
         foreach (Pool pool in PoolRoot.GetComponentsInChildren<Pool>())
         {
-            PoolLookup.Add(pool.Object.name, pool);
+            try
+            {
+                PoolLookup.Add(pool.Object.name, pool);
+            }
+            catch (ArgumentException e)
+            {
+                Debug.LogError($"{pool.Object.name} has already been pooled. Please make sure there are no " +
+                               $"duplicate items being pooled and that all names are unique.");
+            }
         }
 
         follow = GetComponent<Follow>();
@@ -43,11 +50,6 @@ public class Recycler : MonoBehaviour
         follow.enabled = state == GameManager.eGameState.RUNNING;
     }
     
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {

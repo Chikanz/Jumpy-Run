@@ -24,10 +24,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     
     public eGameState GameState { get; private set; } = eGameState.RUNNING;
-
-
-    // Start is called before the first frame update
-    void Awake()
+    
+    private void Awake()
     {
         //Enforce singleton
         if(Instance)

@@ -11,20 +11,19 @@ public class ScoreManager : MonoBehaviour
 {
     public Runner runner;
     private Transform runnerTransform;
+    private Vector3 lastRunnerPosition;
 
     public TextMeshProUGUI ScoreUI;
     public TextMeshProUGUI DistanceUI;
 
-    private int Distance;
+    private float Distance;
     private int PickupScore = 0;
     
-    public ObstacleSpawner ItemSpawner;
+    public ItemSpawner ItemSpawner;
 
-    private Vector3 StartPosition;
-
-
-    // Start is called before the first frame update
-    void Start()
+    
+    
+    private void Start()
     {
         runnerTransform = runner.transform;
 
@@ -32,7 +31,7 @@ public class ScoreManager : MonoBehaviour
 
         Reset();
 
-        StartPosition = runner.transform.position;
+        lastRunnerPosition = runner.transform.position;
         
         GameManager.Instance.OnResetEarly += Reset;
     }
@@ -41,15 +40,15 @@ public class ScoreManager : MonoBehaviour
     {
         Distance = 0;
         PickupScore = 0;
+        lastRunnerPosition = runner.transform.position;
     }
-
-
+    
     /// <summary>
     /// Hook into pickup events so we know when they're picked up
     /// </summary>
     void SetupPickups()
     {
-        foreach (ObstacleSpawner.Obstacle obstacle in ItemSpawner.Obstacles)
+        foreach (PlatformSpawner.PlatformObject obstacle in ItemSpawner.Items)
         {
             var items = obstacle.pool.Items();
             foreach (Transform itemTransform in items)
@@ -58,8 +57,7 @@ public class ScoreManager : MonoBehaviour
             }
         }
     }
-
-
+    
     private void OnItemPickup(object sender, EventArgs e)
     {
         PickupScore++;
@@ -69,7 +67,9 @@ public class ScoreManager : MonoBehaviour
     void Update()
     {
         //Compare X change instead of vector3.distance to avoid square root calcs
-        if(!runner.isDead) Distance = Mathf.RoundToInt(runnerTransform.position.x - StartPosition.x);
+        var runnerDelta = runner.transform.position.x - lastRunnerPosition.x;;
+        if (!runner.isDead && runnerDelta > 0) Distance += runnerDelta; 
+        lastRunnerPosition = runner.transform.position;
 
         UpdateUI();
     }

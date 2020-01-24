@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\chika\.Rider2019.1\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\chika\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_Jumpy-Run.1892227753.00" t="ExcludeRecursive" />
+    <e p="C:\Users\chika\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\chika\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Jumpy-Run.1892227753.00" t="ExcludeRecursive" />
     <e p="C:\Users\chika\OneDrive\Documents\Jumpy-Run" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
-        <e p="GameOverMenu.cs" t="Include" />
-        <e p="ItemPickup.cs" t="Include" />
+        <e p="MovementOffset.cs" t="Include" />
         <e p="Scripts" t="Include">
           <e p="BuildingSpawner.cs" t="Include" />
           <e p="CopyPosition.cs" t="Include" />
           <e p="Follow.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
+          <e p="GameOverMenu.cs" t="Include" />
+          <e p="ItemPickup.cs" t="Include" />
+          <e p="ItemSpawner.cs" t="Include" />
           <e p="MaterialSwitcher.cs" t="Include" />
           <e p="ObstacleSpawner.cs" t="Include" />
+          <e p="PlatformSpawner.cs" t="Include" />
           <e p="Pooling" t="Include">
             <e p="Pool.cs" t="Include" />
           </e>

@@ -39,7 +39,6 @@ public class Pool : MonoBehaviour
         return obj;
     }
     
-
     /// <summary>
     /// Return an item to the pool and disable it
     /// </summary>

@@ -147,7 +147,7 @@ RectTransform:
   m_GameObject: {fileID: 3690448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.55772, y: 0.55772, z: 0.55772}
   m_Children:
   - {fileID: 1779521478}
   m_Father: {fileID: 90226938}
@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -315,6 +315,7 @@ MonoBehaviour:
   PoolParent: {fileID: 309373178}
   TotalPlatformPoolSize: 30
   InitialPlacement: 3
+  PlacementDistanceToPlayer: 50
 --- !u!4 &216828083
 Transform:
   m_ObjectHideFlags: 0
@@ -462,14 +463,14 @@ RectTransform:
   m_GameObject: {fileID: 419637804}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.46832, y: 0.46832, z: 0.46832}
   m_Children: []
   m_Father: {fileID: 90226938}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -25}
+  m_AnchoredPosition: {x: 0, y: -12.599976}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419637806
@@ -1034,22 +1035,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 767641524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da95a7699c6db34ea7228c6e6b3de5e, type: 3}
+  m_Script: {fileID: 11500000, guid: c9e74e22152763847aaefaa1c7df1fb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PoolRoot: {fileID: 309373178}
   spawner: {fileID: 216828082}
-  ObsticlesToPool: 10
+  ObsticlesToPool: 20
   Obstacles:
   - Object: {fileID: 3705649248653971241, guid: 44a3ecc70d94fa14aa9997f7f77a8285,
       type: 3}
+    pool: {fileID: 0}
     PlacementMask: 
-    SpawnChance: 0.25
-    pool: {fileID: 0}
+    SpawnChance: 0.1
   - Object: {fileID: 82390480211004387, guid: 08758c36fa4e09745a41e8e8784c8999, type: 3}
-    PlacementMask: Big apartment
-    SpawnChance: 0.75
     pool: {fileID: 0}
+    PlacementMask: Big apartment
+    SpawnChance: 0.25
 --- !u!1 &847480996
 GameObject:
   m_ObjectHideFlags: 3
@@ -1238,7 +1239,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: -0.0068384805, y: 0.10206506, z: 0.0007016283, w: 0.994754}
+  m_LocalRotation: {x: -0.006836014, y: 0.105503306, z: 0.00072526454, w: 0.99439526}
   m_LocalPosition: {x: 2.3399997, y: 21.73, z: -9.570016}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1305,14 +1306,14 @@ RectTransform:
   m_GameObject: {fileID: 1021879834}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.46832, y: 0.46832, z: 0.46832}
   m_Children: []
   m_Father: {fileID: 90226938}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 6.9, y: -103.1}
+  m_AnchoredPosition: {x: 6.9, y: -48.6}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1021879836
@@ -1474,18 +1475,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1070523889}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da95a7699c6db34ea7228c6e6b3de5e, type: 3}
+  m_Script: {fileID: 11500000, guid: 770aedc92d18dab4cafc7b35c57e1c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PoolRoot: {fileID: 309373178}
   spawner: {fileID: 216828082}
   ObsticlesToPool: 20
-  Obstacles:
+  Items:
+  - Object: {fileID: 5443661327140722453, guid: 21a11921b6f39bc4f9f60b03b8c36337,
+      type: 3}
+    pool: {fileID: 0}
+    points: 1
+  - Object: {fileID: 5443661327140722453, guid: a37de7a7bcd983f4881d9ce73afacdd4,
+      type: 3}
+    pool: {fileID: 0}
+    points: 1
   - Object: {fileID: 5443661327140722453, guid: 2d9745a9638055d48b8d81f451592be9,
       type: 3}
-    PlacementMask: 
-    SpawnChance: 0.25
     pool: {fileID: 0}
+    points: 1
+  chanceToPlaceItems: 0.25
 --- !u!1 &1091968605
 GameObject:
   m_ObjectHideFlags: 0
@@ -1962,7 +1971,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1533337069
 GameObject:
@@ -2025,7 +2034,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1533337069}
-  m_LocalRotation: {x: -0.0068384805, y: 0.10206506, z: 0.0007016283, w: 0.994754}
+  m_LocalRotation: {x: -0.006836014, y: 0.105503306, z: 0.00072526454, w: 0.99439526}
   m_LocalPosition: {x: 2.3399997, y: 21.73, z: -9.570016}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2058,7 +2067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a8575a27ac6f264883b2c610f27029b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShakeAmplitude: 1.5
+  ShakeAmplitude: 2
   ShakeFrequency: 2
 --- !u!1 &1545149005
 GameObject:
@@ -2105,7 +2114,7 @@ PrefabInstance:
     - target: {fileID: 2741371206627188550, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2799127245497861763, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
@@ -2145,7 +2154,7 @@ PrefabInstance:
     - target: {fileID: 2799127245497861763, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2799127245497861763, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
@@ -2165,7 +2174,7 @@ PrefabInstance:
     - target: {fileID: 6248331158134664414, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8025059424945562759, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
@@ -2175,7 +2184,7 @@ PrefabInstance:
     - target: {fileID: 8025059424945562759, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7782973660020721400, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
@@ -2185,12 +2194,12 @@ PrefabInstance:
     - target: {fileID: 6595292390219130476, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 984777986808479323, guid: 4c85fa721ae934e4cadc8c36799a9518,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3414844449376904606, guid: 4c85fa721ae934e4cadc8c36799a9518, type: 3}
@@ -2319,7 +2328,7 @@ RectTransform:
   m_GameObject: {fileID: 1779521477}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.73301, y: 0.73301, z: 0.73301}
   m_Children:
   - {fileID: 1112422614}
   - {fileID: 440739986}
