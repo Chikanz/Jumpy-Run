@@ -17,14 +17,13 @@ public class ItemSpawner : PlatformSpawner
 
     protected override void PlatformPlacementLogic(Transform platform)
     {
-        if (Random.Range(0.0f, 1.0f) < chanceToPlaceItems && !PlacedThisFrame)
+        if (Random.value < chanceToPlaceItems && !PlatformsPlacedOnThisFrame.Contains(platform))
         {
             var item = Items[Random.Range(0, Items.Length)];
             PlacePlatformObject(item, platform);
         }
     }
-    
-    
+
     [Serializable]
     public class PlatformItem : PlatformObject
     {

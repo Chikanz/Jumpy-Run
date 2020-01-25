@@ -12,7 +12,9 @@ public abstract class PlatformSpawner : MonoBehaviour
     public int ObsticlesToPool = 20;
 
     private bool firstPlatformPlaced = false; //Stop from spawning obsticles on first platform
-    protected static bool PlacedThisFrame; //Bit of a hack to stop objects spawning in each other
+
+    //Contains all the platforms placed this frame. Lets child classes decide if they want to place on a platform with stuff on it
+    protected static HashSet<Transform> PlatformsPlacedOnThisFrame = new HashSet<Transform>(); 
 
     /// <summary>
     /// Get the items to spawn from the child class
@@ -22,7 +24,7 @@ public abstract class PlatformSpawner : MonoBehaviour
 
     protected abstract void PlatformPlacementLogic(Transform platform);
     
-    private void Start()
+    private void Awake()
     {
         var pObjects = GetObjects();
         
@@ -78,14 +80,14 @@ public abstract class PlatformSpawner : MonoBehaviour
         var pos = platform.position + Vector3.up * platform.GetComponent<BoxCollider>().size.y;
         obj.position = pos;
         obj.rotation = Quaternion.Euler(0, 180, 0);
-
-        PlacedThisFrame = true;
+        
+        PlatformsPlacedOnThisFrame.Add(platform);
     }
     
     
     protected virtual void Update()
     {
-        PlacedThisFrame = false;
+        PlatformsPlacedOnThisFrame.Clear();
     }
     
     [Serializable]

@@ -1,73 +1,49 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
+/// <summary>
+/// Attempt to stop floating point errors by moving everything in the world back to 0 after a set distance.
+/// </summary>
 public class MovementOffset : MonoBehaviour
 {
     public Transform Player;
-    private Vector3 PlayerDelta;
-    private Vector3 playerLastPos;
-    public float ResetDistance = 100;
     public CinemachineVirtualCamera Cam;
-
-    private Transform dummyParent;
+    [Tooltip("The distance at which every item in the scene is brought back to the world 0")]
+    public float ResetDistance = 1000; //Should be around 1,000 - 100,000 according to https://gamedev.stackexchange.com/questions/151732/what-is-actually-moving-in-an-endless-runner 
     private Transform PlayerCameraPoint;
+    private Vector3 CamPlayerOffset;
 
     private void Start()
     {
-        dummyParent = Instantiate(new GameObject("Dummy Parent")).transform;
         PlayerCameraPoint = Player.Find("Cam Follow");
+        CamPlayerOffset = Cam.transform.position - PlayerCameraPoint.position;
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        PlayerDelta = Player.position - playerLastPos;
-        if (Player.position.x > ResetDistance)
+        if (Player.position.x > ResetDistance && GameManager.Instance.GameState == GameManager.eGameState.RUNNING)
         {
-            StartCoroutine(ResetWorldPos());
+            ResetWorldPos();
         }
-
-        playerLastPos = Player.transform.position;
     }
 
-    private IEnumerator ResetWorldPos()
+    private void ResetWorldPos()
     {
         ToggleCam(false); //Fight cinemachine
-        yield return null;
         Cam.enabled = false;
-        //Cam.transform.position += PlayerDelta;
 
-        //move back
-        transform.position += Vector3.left * ResetDistance;
+        //Move everything back to 0
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).position += Vector3.left * ResetDistance;
+        }
 
-        //todo test camera rotation delta 
-        
-        //set parent to dummy
-        //SetParent(dummyParent, transform);
-            
-        //reset position
-        //transform.position = Vector3.zero;
-            
-        //reset parent
-        //SetParent(transform, dummyParent);
-
+        //Try to move the camera without cinemachine freaking out
         Cam.enabled = true;
-        yield return null;
         ToggleCam(true);
         Cam.OnTargetObjectWarped(Player, Vector3.left * ResetDistance);
-
-        //yield return null;
-        
-    }
-
-    void SetParent(Transform To, Transform From)
-    {
-        foreach (Transform t in From)
-        {
-            t.SetParent(To);
-        }
     }
 
     void ToggleCam(bool enabled)

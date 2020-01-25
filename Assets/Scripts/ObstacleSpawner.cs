@@ -20,7 +20,7 @@ public class ObstacleSpawner : PlatformSpawner
         var obstacle = Obstacles[index];
         
         //Chance to place
-        if (Random.value <= obstacle.SpawnChance && !PlacedThisFrame)
+        if (Random.value <= obstacle.SpawnChance && !PlatformsPlacedOnThisFrame.Contains(platform))
         {
             //Only place on right platforms
             if (obstacle.PlacementMask == string.Empty || platform.name == obstacle.PlacementMask) 
